@@ -1,0 +1,5 @@
+lastName = input("What is your last name? ")
+print("The length of your last name is: " +str(len(lastName)))
+print("The first charecter of your last name is: " + lastName[0])
+print("The last character of your last name is: " + lastName[-1])
+print("The last three characters of your last name are: " + lastName[-3] + lastName[-2] + lastName[-1])
