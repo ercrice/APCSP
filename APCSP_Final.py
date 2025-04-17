@@ -2,10 +2,54 @@ import tkinter as tk
 from tkinter import ttk
 
 window = tk.Tk()
-window.title("Hello World")
+window.title("To-do List")
 
-button = ttk.Button(window, text="My simple app.")
-button.pack()
 
+title = ttk.Label(window, text="To-do List", font=("Arial", 20))
+title.grid(row=0, column=1)
+
+subtitle = ttk.Label(window, text="Enter a task below:")
+subtitle.grid(row=1, column=0)
+taskEntry = ttk.Entry(window, width=50)
+taskEntry.grid(row=1, column=1)
+
+dueDate = ttk.Label(window, text="Due date (YYYY-MM-DD):")
+dueDate.grid(row=2, column=0, sticky="e")
+dueDateEntry = ttk.Entry(window, width=50)
+dueDateEntry.grid(row=2, column=1)
+
+tasks = []
+listbox = tk.Listbox(window, width=50, height=10)
+listbox.grid(row=3, column=1,)
+
+def addTask():
+    task = taskEntry.get()
+    due = dueDateEntry.get()
+    if task:
+        fullTask = task + " - Due: " + (due if due else "N/A")
+        tasks.append(fullTask)
+        listbox.insert(tk.END, fullTask)
+        taskEntry.delete(0, tk.END)
+        dueDateEntry.delete(0, tk.END)
+        print(tasks)
+ 
+def deleteTask():
+    tasks.remove(listbox.get(listbox.curselection()))
+    listbox.delete(listbox.curselection())
+    print(tasks)
+
+def clearTasks():
+    tasks.clear()
+    listbox.delete(0, tk.END)
+    print(tasks)
+
+def sortByDue():
+    tasks.sort()
+    print(tasks)
+
+ttk.Button(window, text="Add task", command=addTask).grid(row=4, column=1)
+ttk.Button(window, text="Sort by due date", command=sortByDue).grid(row=4, column=2) 
+ttk.Button(window, text="Delete task", command=deleteTask, ).grid(row=5, column=1)   
+ttk.Button(window, text="Clear tasks", command=clearTasks).grid(row=5, column=2)
 
 window.mainloop()
