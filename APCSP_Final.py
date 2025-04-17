@@ -4,7 +4,6 @@ from tkinter import ttk
 window = tk.Tk()
 window.title("To-do List")
 
-
 title = ttk.Label(window, text="To-do List", font=("Arial", 20))
 title.grid(row=0, column=1)
 
@@ -19,8 +18,8 @@ dueDateEntry = ttk.Entry(window, width=50)
 dueDateEntry.grid(row=2, column=1)
 
 tasks = []
-listbox = tk.Listbox(window, width=50, height=10)
-listbox.grid(row=3, column=1,)
+taskListbox = tk.Listbox(window, width=50, height=10)
+taskListbox.grid(row=3, column=1,)
 
 def addTask():
     task = taskEntry.get()
@@ -28,23 +27,29 @@ def addTask():
     if task:
         fullTask = task + " - Due: " + (due if due else "N/A")
         tasks.append(fullTask)
-        listbox.insert(tk.END, fullTask)
+        taskListbox.insert(tk.END, fullTask)
         taskEntry.delete(0, tk.END)
         dueDateEntry.delete(0, tk.END)
         print(tasks)
  
 def deleteTask():
-    tasks.remove(listbox.get(listbox.curselection()))
-    listbox.delete(listbox.curselection())
+    tasks.remove(taskListbox.get(taskListbox.curselection()))
+    taskListbox.delete(taskListbox.curselection())
     print(tasks)
 
 def clearTasks():
     tasks.clear()
-    listbox.delete(0, tk.END)
+    taskListbox.delete(0, tk.END)
     print(tasks)
 
+def dueDate(task):
+    return task.split(" - Due: ")[1]
+    
 def sortByDue():
-    tasks.sort()
+    tasks.sort(key=dueDate)
+    taskListbox.delete(0, tk.END)
+    for task in tasks:
+        taskListbox.insert(tk.END, task)
     print(tasks)
 
 ttk.Button(window, text="Add task", command=addTask).grid(row=4, column=1)
